@@ -1,5 +1,7 @@
 /** 
- * i am naomi :)
+ * Naomi Wolfman
+ * sept. 24 2024
+ * problem set 2a
  */
 
 public class Driver {
@@ -11,8 +13,6 @@ public class Driver {
         System.out.println("");
         printCylinder(customC);
         
-        
-
     }
     
     public static void printCylinder(Cylinder C) {

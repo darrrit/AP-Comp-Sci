@@ -1,7 +1,7 @@
 /**
  * Naomi Wolfman
- * 1-3
  * Sept. 23, 2024
+ * problem set 2a
  */
 
 public class Circle {
