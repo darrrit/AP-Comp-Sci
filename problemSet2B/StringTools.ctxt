@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=StringTools
+comment0.text=\ \r\n\ Naomi\ Wolfman\r\n\ sept.\ 25\ 2024\r\n\ 1-3\r\n\ Problem\ set\ 2B\r\n
+comment1.params=str
+comment1.target=java.lang.String\ lastLetter(java.lang.String)
+comment2.params=str
+comment2.target=java.lang.String\ formatPhoneNumber(java.lang.String)
+comment3.params=str
+comment3.target=java.lang.String\ middleThree(java.lang.String)
+numComments=4
