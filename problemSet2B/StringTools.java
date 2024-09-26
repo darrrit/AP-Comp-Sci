@@ -5,21 +5,35 @@
  * Problem set 2B
  */
 
+
 public class StringTools {
-    public String lastLetter(String str) {
+    static public String lastLetter(String str) {
         String lastLetter = str.substring(str.length()-1);
         return lastLetter;
     }
     
-    public String formatPhoneNumber(String str) {
+    static public String formatPhoneNumber(String str) {
         String goodNumber = "(" + str.substring(0, 3) +") "+ str.substring(3, 6) + "-" + str.substring(6);
         return goodNumber;
     }
     
-    public String middleThree(String str) {
+    static public String middleThree(String str) {
         int skipNum = (str.length()-3)/2;
-        System.out.print(skipNum);
         String midThree = str.substring(skipNum, skipNum + 3);
         return midThree;
     }
+    
+    static public String swapLastTwo (String str) {
+        String main = str.substring(0, str.length()-2);
+        main = main + str.substring(str.length() - 1) + str.substring(str.length()-2, str.length()-1);
+        return main;
+    }
+    
+    static public boolean frontAgain (String str, int n) {
+        String str1 = str.substring(0, n);
+        String str2 = str.substring(str.length()-n);
+        return (str1.equals(str2));
+    }
+
+
 }
