@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Formulas
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Formulas\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=a\ b\ c
+comment1.target=OrderedPair\ findQuadRoots(double,\ double,\ double)
+comment2.params=A\ B
+comment2.target=double\ findSlope(OrderedPair,\ OrderedPair)
+comment3.params=A\ B
+comment3.target=OrderedPair\ findMidpoint(OrderedPair,\ OrderedPair)
+numComments=4
