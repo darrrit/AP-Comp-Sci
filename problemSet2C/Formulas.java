@@ -29,4 +29,19 @@ public class Formulas
         return ans;
     }
 
+    public static double findArithmeticSeriesSum (double a, double d, int k) {
+        double sum  = (k/2.0)*(2*a + d*(k-1));
+        return sum;
+    }
+    
+    public static double findGeometricSeriesSum (double a, double r, int k) {
+        double sum = a*((1-Math.pow(r, k))/(1-r));
+        return sum;
+    }
+    
+    public static int rollDie (int n) {
+        double base = Math.random();
+        int roll = (int) ((base * n) + 1);
+        return roll;
+    }
 }
