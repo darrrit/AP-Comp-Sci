@@ -18,27 +18,37 @@ public class Elby {
     public String getResponse(String _statement) {
         statement = _statement.trim();
         String response = "";
+        int youIndex = findKeyword(statement, "you", 0);
+        int iIndex = findKeyword(statement, "I", 0);
         if (statement.length() == 0) {
             response = "Say something, please.";
+        } else if (FKDefault("murder")) {
+            response = "I have been programmed on an anti murder agenda... however, have no default stance on suspicious accidents";
+        } else if (FKDefault("you") && findKeyword(statement, "me", youIndex) > 0) {    
+            response = transformYouMeStatement(statement);
+        } else if (FKDefault("I") && findKeyword(statement, "you", iIndex) > 0) {
+            response = transformIMeStatement(statement);
+        } else if (FKDefault("I want")) {  
+            response = transformIWantStatement(statement);
+        } else if (FKDefault("I want to")) {
+            response = transformIWantToStatement(statement);
         } else if (FKDefault("naomi")) {
             //my prounous are they/them btw :)
             response = "Naomi is such an intelligent person aren't they?";
         } else if (FKDefault("no")) {
             response = "Why so negative?";
-        } else if (FKDefault("murder")) {
-            response = "I have been programmed on an anti murder agenda... however, have no default stance on suspicious accidents";
         } else if (FKDefault("computer")) {
             response = "Are you just jelous that your aren't as advanced as me?";
         } else if (FKDefault("mother")
-        || OWCDefault("father")
-        || OWCDefault("sister")
-        || OWCDefault("brother")) {
+        || FKDefault("father")
+        || FKDefault("sister")
+        || FKDefault("brother")) {
             response = "Tell me more about your family.";
         }
         else if (FKDefault("cat") 
-        || OWCDefault("pet")
-        || OWCDefault("pets")
-        || OWCDefault("dog")){
+        || FKDefault("pet")
+        || FKDefault("pets")
+        || FKDefault("dog")){
             response = "Tell me more about your pets.";
         } else {
             response = getRandomResponse();
@@ -82,34 +92,6 @@ public class Elby {
         return response;
     }
 
-    public int ownWordCheck (String input, String goal) {
-        int index = capCheck(input, goal);
-        if (index < 0) return -1;
-        if (index != 0 && input.charAt(index-1) != ' ') return -1;
-        if (goal.length()+index < input.length()) {
-            char end = input.charAt(index + goal.length());
-            if (end != ' '&& end != '.' && end != '!') return -1;
-        } 
-        return index;
-    }
-
-    public boolean OWCDefault (String goal) {
-        int index = capCheck(statement, goal);
-        if (index < 0) return false;
-        if (index != 0 && statement.charAt(index-1) != ' ') return false;
-        if (goal.length()+index < statement.length()) {
-            char end = statement.charAt(index + goal.length());
-            if (end != ' '&& end != '.' && end != '!') return false;
-        } 
-        return true;
-    }
-
-    public int capCheck(String input, String goal) {
-        String lGoal = goal.toLowerCase();
-        String lowerInput = input.toLowerCase();
-        return lowerInput.indexOf(goal); 
-    }
-
     /**
      * Search for one word in phrase. The search is not case sensitive. This method
      * will check that the given goal is not a substring of a longer string (so,
@@ -119,9 +101,9 @@ public class Elby {
      * @param goal the string to search for
      * @param startPos the character of the string to begin the search at
      * @return the index of the first occurrence of goal in statement or -1 if it's
-     * 	not found
+     *     not found
      */
-    
+
     public boolean FKDefault (String goal) {
         return (findKeyword(statement, goal, 0) >= 0);
     }
@@ -160,5 +142,90 @@ public class Elby {
         }
         return -1;
     }
+
+    public String transformYouMeStatement(String statement) {
+        //Remove the final period, if there is one
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".")) {
+            statement = statement.substring(0, statement.length() - 1);
+        }
+
+        int posOfYou = findKeyword(statement, "you", 0);
+        int posOfMe  = findKeyword(statement, "me",  posOfYou + 3);
+
+        String restOfStatement = statement.substring(posOfYou + 3, posOfMe).trim();
+        return "What makes you think that I " + restOfStatement + " you?";
+    }
+
+    public String transformIMeStatement(String statement) {
+    	statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".")) {
+            statement = statement.substring(0, statement.length() - 1);
+        }
+
+        int posOfYou = findKeyword(statement, "I", 0);
+        int posOfMe  = findKeyword(statement, "you",  posOfYou + 1);
+
+        String restOfStatement = statement.substring(posOfYou + 1, posOfMe).trim();
+    	return "Why do you " + restOfStatement + " me?";
+}
+
+    
+    public String transformIWantToStatement(String statement) {
+        //Remove the final period, if there is one
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".")) {
+            statement = statement.substring(0, statement.length() - 1);
+        }
+        int pos = findKeyword(statement, "I want to", 0);
+        String restOfStatement = statement.substring(pos + 9).trim();
+        return "What would it mean to " + restOfStatement + "?";
+    }
+
+    public String transformIWantStatement(String statement){
+        statement = statement.trim();
+        String lastChar = statement.substring(statement.length() - 1);
+        if (lastChar.equals(".")) {
+            statement = statement.substring(0, statement.length() - 1);
+        }
+
+        int pos = findKeyword(statement, "I want", 0);
+        String restOfStatement = statement.substring(pos + 6).trim();
+        return "Would you really be happy if you had " + restOfStatement + "?";
+    }
+
+    /*
+    public int ownWordCheck (String input, String goal) {
+    int index = capCheck(input, goal);
+    if (index < 0) return -1;
+    if (index != 0 && input.charAt(index-1) != ' ') return -1;
+    if (goal.length()+index < input.length()) {
+    char end = input.charAt(index + goal.length());
+    if (end != ' '&& end != '.' && end != '!') return -1;
+    } 
+    return index;
+    }
+
+    public boolean OWCDefault (String goal) {
+    int index = capCheck(statement, goal);
+    if (index < 0) return false;
+    if (index != 0 && statement.charAt(index-1) != ' ') return false;
+    if (goal.length()+index < statement.length()) {
+    char end = statement.charAt(index + goal.length());
+    if (end != ' '&& end != '.' && end != '!') return false;
+    } 
+    return true;
+    }
+
+    public int capCheck(String input, String goal) {
+    String lGoal = goal.toLowerCase();
+    String lowerInput = input.toLowerCase();
+    return lowerInput.indexOf(goal); 
+    }
+
+     */
 
 }
