@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Driver {
     public static void main (String[] args) {
         Scanner input = new Scanner(System.in);
-        /*
+        
         System.out.println("QUADRATIC FORMULA: Find the roots of ax^2 + bx + c. Enter a, b and c: ");
         double a, b, c;
         System.out.print("a: ");
@@ -49,11 +49,11 @@ public class Driver {
         A = new OrderedPair(x1, y1);
         B = new OrderedPair(x2, y2);
         System.out.println("The midpoint between ("+ x1 +","+ y1 +" ) and ("+ x2 +", "+ y2 +") is "+ Formulas.findMidpoint(A, B) + ".");
-         */
+    
         System.out.println(" ");
 
         int k;
-        double a, d;
+        double d;
         System.out.println("SUM OF AN ARITHMETIC SERIES");
         System.out.print("Number of terms: ");
         k = input.nextInt();
