@@ -6,7 +6,7 @@
 
 import java.util.Scanner;
 
-public class SickestBurn {
+public class studentQuestions {
     public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
     System.out.print("What's your favourite course?: ");
