@@ -159,14 +159,37 @@ public class Review {
         }
     }
 
-    static void totalSentiment (String fileName) {
-        String input  = textToString("review.txt");
+    public static double totalSentiment (String fileName) {
+        String input  = textToString(fileName);
         String[] myArray = input.split(" ");
-        int value = 0;
+        double value = 0;
         for (int i = 0; i < myArray.length; i++) {
-            value += sentimentVal(myArray[i]);
+            value += sentimentVal(removePunctuation( myArray[i] ));
         }
-        System.out.println(value);
-        
+        return value;
+    }
+
+    public static int starRating (String fileName) {
+        double baseVal = totalSentiment(fileName);
+        baseVal = baseVal/2;
+        baseVal += 3;
+        baseVal = Math.max(baseVal, 0);
+        baseVal = Math.min(baseVal, 5);
+        return (int) baseVal;
+    }
+
+    public static String fakeReview(String fileName) {
+        String input = textToString(fileName);
+        int starIndex;
+
+        while ((starIndex = input.indexOf("*")) >= 0) {
+            int spaceIndex = input.indexOf(" ", starIndex);
+            String firstPart = input.substring(0, starIndex);
+            String lastPart = input.substring(spaceIndex);
+            String punctuation = 
+            input = firstPart + randomAdjective() + lastPart;
+        }
+
+        return input;
     }
 }
