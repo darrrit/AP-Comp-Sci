@@ -168,8 +168,7 @@ public class Review {
         }
         return value;
     }
-    
-    
+
     public static int starRating (String fileName) {
         double baseVal = totalSentiment(fileName);
         baseVal = baseVal/2;
@@ -177,5 +176,20 @@ public class Review {
         baseVal = Math.max(baseVal, 0);
         baseVal = Math.min(baseVal, 5);
         return (int) baseVal;
+    }
+
+    public static String fakeReview(String fileName) {
+        String input = textToString(fileName);
+        int starIndex;
+
+        while ((starIndex = input.indexOf("*")) >= 0) {
+            int spaceIndex = input.indexOf(" ", starIndex);
+            String firstPart = input.substring(0, starIndex);
+            String lastPart = input.substring(spaceIndex);
+            String punctuation = "" + getPunctuation(input.substring(starIndex+1, spaceIndex));
+            input = firstPart + randomAdjective() + punctuation + lastPart;
+        }
+
+        return input;
     }
 }

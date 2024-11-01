@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class driver
 {
     public static void main (String[] args) {
-        System.out.println(Review.starRating("review.txt"));
+        System.out.println(Review.fakeReview("review.txt"));
     }
 
     static void testSV () {
