@@ -178,6 +178,41 @@ public class Review {
         return (int) baseVal;
     }
 
+    public static String fakeReviewV2(String fileName) {
+        boolean positive = (totalSentiment(fileName)) >= 0;
+        String input = textToString(fileName);
+        int starIndex;
+
+        while ((starIndex = input.indexOf("*")) >= 0) {
+            int spaceIndex = input.indexOf(" ", starIndex);
+            String firstPart = input.substring(0, starIndex);
+            String lastPart = input.substring(spaceIndex);
+            String oldWord = input.substring(starIndex+1, spaceIndex);
+            String punctuation = "" + getPunctuation(oldWord);
+            oldWord = removePunctuation(oldWord);
+            String newWord = "";
+            if (positive) {
+                newWord += randomPositiveAdj();
+                while (sentimentVal(oldWord) - 1 > sentimentVal(newWord)) {
+                    newWord = randomPositiveAdj();
+                }
+            } else {
+                newWord += randomNegativeAdj();
+                while (sentimentVal(oldWord)+1 < sentimentVal(newWord)) {
+                    // +1 is to increase word veriety
+                    newWord = randomNegativeAdj();
+                }
+            }
+            
+            
+            input = firstPart + newWord + punctuation + lastPart;
+            
+            System.out.println(newWord + ", " + sentimentVal(newWord));
+        }
+
+        return input;
+    }
+
     public static String fakeReview(String fileName) {
         String input = textToString(fileName);
         int starIndex;
@@ -186,8 +221,8 @@ public class Review {
             int spaceIndex = input.indexOf(" ", starIndex);
             String firstPart = input.substring(0, starIndex);
             String lastPart = input.substring(spaceIndex);
-            String punctuation = 
-            input = firstPart + randomAdjective() + lastPart;
+            String punctuation = "" + getPunctuation(input.substring(starIndex+1, spaceIndex));
+            input = firstPart + randomAdjective() + punctuation + lastPart;
         }
 
         return input;
