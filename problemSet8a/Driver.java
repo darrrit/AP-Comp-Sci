@@ -25,9 +25,10 @@ public class Driver {
     public static void game () {
         Scanner input = new Scanner(System.in);
         Grid myGrid = new Grid();
-        myGrid.draw();
+        System.out.println("Round 1");
+        myGrid.drawBoard();
         int i = 0;
-        while (! (myGrid.winX() || myGrid.winY())) {
+        while (! (myGrid.winX() || myGrid.winY() || myGrid.full())) {
             char symbol = i%2 == 0 ? 'X' : '0';
             System.out.print("Player " + symbol + " please select a column: ");
             int col = input.nextInt();
@@ -38,10 +39,15 @@ public class Driver {
                 col--;
             }
             System.out.println("");
+            System.out.println("Round " + (i+2));
             myGrid.round(col, symbol);
             i++;
         }
         System.out.println();
-        System.out.println("Player "+ (myGrid.winX() ? 'X' : 'Y') +" Wins!");
+        if (myGrid.full()) {
+            System.out.println("You both suck. No one wins.");
+        } else {
+            System.out.println("Player "+ (myGrid.winX() ? 'X' : 'Y') +" Wins!");
+        }
     }
 }

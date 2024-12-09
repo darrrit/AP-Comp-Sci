@@ -19,7 +19,7 @@ public class Grid
         }
     }
 
-    public void draw()
+    public void drawBoard()
     {
         System.out.println("|1||2||3||4||5||6||7|");
         for (int row = 0; row < board.length; row++) {
@@ -126,7 +126,7 @@ public class Grid
     public void round(int col, char symbol) {
         place(symbol, col);
         drop(0, col);
-        draw();
+        drawBoard();
     }
     
     public boolean validMove(int col) {
@@ -134,4 +134,14 @@ public class Grid
         if (board[0][col] != ' ') return false;
         return true;
     }
+    
+    public boolean full() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == ' ') return false;
+            }
+        }
+        return true;
+    }
+    
 }
