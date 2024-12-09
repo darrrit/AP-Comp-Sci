@@ -8,7 +8,7 @@
 public class Grid
 {
     private char[][] board;
-    
+
     public Grid()
     {
         board = new char[6][7];
@@ -29,56 +29,109 @@ public class Grid
             System.out.println(" ");
         }
     }
-    
+
     public void drop(int row, int col) {
         for (int i = 0; (row + i < board.length - 1) && (board[row+i+1][col] == ' '); i++) {
             board[row+i+1][col] = board[row+i][col];
             board[row+i][col] = ' ';
         }
     }
-    
+
     public void place(char player, int col) {
         board[0][col] = player;
     }
-    
-    public boolean win() {
-        return (checkCol() || checkRow());
+
+    public boolean winX() {
+        return (checkRow('X') || checkCol('X') || checkDiagUpR('X') || checkDiagDownR('X'));
     }
     
-    public boolean checkRow() {
+    public boolean winY() {
+        return (checkRow('Y') || checkCol('Y') || checkDiagUpR('Y') || checkDiagDownR('Y'));
+    }
+    
+    public boolean checkRow(char symbol) {
         for(int i = 0; i < board.length; i++) {
             int streak = 0;
-            for (int j = 0; j < board[0].length-1; j++) {
-                if (board[i][j] == board[i][j+1] && board[i][j] != ' ') {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == symbol) {
                     streak++;
                 } else {
                     streak = 0;
                 }
-                if (streak >= 4) return true;
+                if (streak >= 4)return true;
             }
         }
         return false;
     }
-    
-    public boolean checkCol() {
-        for(int i = 0; i < board[0].length; i++) {
+
+    public boolean checkCol(char symbol) {
+        for (int j = 0; j < board[0].length; j++) {
             int streak = 0;
-            for (int j = 0; j < board.length-1; j++) {
-                if (board[j][i] == board[j+1][i] && board[j][i] != ' ') {
+            for (int i = 0; i < board.length; i++) {
+                if (board[i][j] == symbol) {
+                    streak++;
+                } else {
+                    streak = 0;
+                }
+                if (streak >= 4)return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkDiagUpR(char symbol) {
+        int iStart = 3;    
+        int jStart = 0;
+        while (jStart < 4) {
+            int streak = 0;
+            for (int i = iStart, j = jStart; i >= 0 && j < board[0].length; i--, j++) {
+                if (board[i][j] == symbol) {
                     streak++;
                 } else {
                     streak = 0;
                 }
                 if (streak >= 4) return true;
             }
+            if (iStart < board.length-1) { 
+                iStart++;
+            } else {
+                jStart++;
+            }
         }
         return false;
     }
     
-    
-    public void round(int col, int roundNum) {
-        place(roundNum%2 == 0 ? 'X' : 'O', col);
+        public boolean checkDiagDownR(char symbol) {
+        int iStart = 2;    
+        int jStart = 0;
+        while (jStart < 4) {
+            int streak = 0;
+            for (int i = iStart, j = jStart; i < board.length && j < board[0].length; i++, j++) {
+                if (board[i][j] == symbol) {
+                    streak++;
+                } else {
+                    streak = 0;
+                }
+                if (streak >= 4) return true;
+            }
+            if (iStart > 0) { 
+                iStart--;
+            } else {
+                jStart++;
+            }
+        }
+        return false;
+    }
+
+    public void round(int col, char symbol) {
+        place(symbol, col);
         drop(0, col);
         draw();
+    }
+    
+    public boolean validMove(int col) {
+        if (col > 6 || col < 0) return false;
+        if (board[0][col] != ' ') return false;
+        return true;
     }
 }
