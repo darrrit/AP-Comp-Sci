@@ -38,7 +38,7 @@ public class Fraction
     public int getNum() {
         return numerator;
     }
-    
+
     public int getDenom() {
         return denominator;
     }
@@ -50,86 +50,108 @@ public class Fraction
     public double toDouble() {
         return (double)numerator/denominator;
     }
-    
+
     public void reduce() {
         int GCF = greatestCommonFactor(numerator, denominator);
         numerator /= GCF;
         denominator /= GCF;
     }
-    
-    /*
-    public void reduce() {
-        ArrayList<Integer> primes = primeList(Math.min(numerator, denominator));
-        int i = 0;
-        while (i < primes.size()) {
-            int val = primes.get(i);
-            while (numerator % val == 0 && denominator % val == 0) {
-                numerator = numerator / val;
-                denominator = denominator / val;
-            }
-            if (val > denominator || val > numerator) break;
-            i++;
-        }
-    }
 
-    public static ArrayList<Integer> primeList(int n){
-        ArrayList<Integer> ans = new ArrayList();
-        for (int i = 2; i <= n; i++) {
-            ans.add(i);
-        }
-        for (int i = 0; i < ans.size(); i++) {
-            for (int j = i+1; j < ans.size(); j++) {
-                if (ans.get(j) % ans.get(i) == 0) {
-                    ans.remove(j);
-                    j--;
-                }
-            }
-        }
-        return ans;
+    private void simplifyNegative() {
+        boolean neg = numerator*denominator < 0;    
+        numerator = Math.abs(numerator);
+        denominator = Math.abs(denominator);
+        if (neg) numerator = numerator * -1;
     }
-*/
-
 
     public void setNum(int n) {
-        numerator =  n;    
+        numerator =  n;
+        simplifyNegative();
+        reduce();
     }
 
     public void setDenom(int d) {
         checkZero(d);
         denominator = d;
+        simplifyNegative();
+        reduce();
     }
-    
+
     public static Fraction mult(Fraction a, Fraction b) {
         int n = a.getNum()*b.getNum();
         int d = a.getDenom()*b.getDenom();
         Fraction ans = new Fraction(n, d);
-        return ans;
-    }
-    
-    public static Fraction divide(Fraction aNum, Fraction bDen) {
-        int n = aNum.getNum()*bDen.getDenom();
-        int d = aNum.getDenom()*bDen.getNum();
-        Fraction ans = new Fraction(n, d);
+        ans.simplifyNegative();
+        ans.reduce();
         return ans;
     }
 
-    public static Fraction add(Fraction a, Fraction b) {
-        Fraction aD = new Fraction(a.getDenom(), a.getDenom());
-        Fraction bD = new Fraction(b.getDenom(), b.getDenom());
-        Fraction ans = new Fraction(mult(a, bD), );
+    public static Fraction divide(Fraction a, Fraction b) {
+        Fraction inverse = new Fraction(b.getDenom(), b.getNum());
+        return mult(a, inverse);
     }
-    
+
+    public static Fraction add(Fraction a, Fraction b) {
+        Fraction aDenomFraction = new Fraction(a.getDenom(), a.getDenom());
+        Fraction bDenomFraction = new Fraction(b.getDenom(), b.getDenom());
+        //brocken because fractions are getting simplified
+        a = mult(a, bDenomFraction);
+        System.out.println(aDenomFraction);
+        b = mult(b, aDenomFraction);
+        System.out.println(bDenomFraction);
+        Fraction ans = new Fraction(a.getNum()+b.getNum(), b.getDenom());
+        ans.reduce();
+        return ans;
+    }
+
+    public static Fraction subtract(Fraction a, Fraction b) {
+        b.setNum(b.getNum()*-1);
+        return add(a, b);
+    }
+
+    //borcken if num is 0
     private static int greatestCommonFactor(int a, int b) {
         a = Math.abs(a);
-        b = Math.abs(b);
         if(a == b) return a;
         int smallest = Math.min(a, b);
         int remainder = Math.abs(a - b);
         return greatestCommonFactor(smallest, remainder);
     }
-    
-        void checkZero(int n) throws ArithmeticException {
+
+    void checkZero(int n) throws ArithmeticException {
         if (n == 0) throw new ArithmeticException("Undefined Value");
     }
-    
+
+    /*
+    public void reduce() {
+    ArrayList<Integer> primes = primeList(Math.min(numerator, denominator));
+    int i = 0;
+    while (i < primes.size()) {
+    int val = primes.get(i);
+    while (numerator % val == 0 && denominator % val == 0) {
+    numerator = numerator / val;
+    denominator = denominator / val;
+    }
+    if (val > denominator || val > numerator) break;
+    i++;
+    }
+    }
+
+    public static ArrayList<Integer> primeList(int n){
+    ArrayList<Integer> ans = new ArrayList();
+    for (int i = 2; i <= n; i++) {
+    ans.add(i);
+    }
+    for (int i = 0; i < ans.size(); i++) {
+    for (int j = i+1; j < ans.size(); j++) {
+    if (ans.get(j) % ans.get(i) == 0) {
+    ans.remove(j);
+    j--;
+    }
+    }
+    }
+    return ans;
+    }
+     */
+
 }
