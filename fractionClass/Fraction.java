@@ -92,14 +92,10 @@ public class Fraction
     }
 
     public static Fraction add(Fraction a, Fraction b) {
-        Fraction aDenomFraction = new Fraction(a.getDenom(), a.getDenom());
-        Fraction bDenomFraction = new Fraction(b.getDenom(), b.getDenom());
-        //brocken because fractions are getting simplified
-        a = mult(a, bDenomFraction);
-        System.out.println(aDenomFraction);
-        b = mult(b, aDenomFraction);
-        System.out.println(bDenomFraction);
-        Fraction ans = new Fraction(a.getNum()+b.getNum(), b.getDenom());
+        int commonD = a.getDenom()*b.getDenom();
+        a.setNum(a.getNum()*commonD/a.getDenom());
+        b.setNum(b.getNum()*commonD/b.getDenom());
+        Fraction ans = new Fraction(a.getNum()+b.getNum(), commonD);
         ans.reduce();
         return ans;
     }
