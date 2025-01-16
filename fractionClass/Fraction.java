@@ -13,8 +13,8 @@ public class Fraction
     private int denominator;
 
     public Fraction() {
-        numerator = 1;
-        denominator = 1;
+        numerator = (int)(Math.random()*20+1);
+        denominator = (int)(Math.random()*20+1);
     }
 
     public Fraction(int n, int d) {
@@ -51,12 +51,24 @@ public class Fraction
         return (double)numerator/denominator;
     }
 
-    public void reduce() {
-        int GCF = greatestCommonFactor(numerator, denominator);
-        numerator /= GCF;
-        denominator /= GCF;
+    public int toPercent() {
+        return (int)(toDouble()*100+0.5);
     }
-
+    
+    public void reduce() {
+        if (numerator != 0) {
+            int GCF = greatestCommonFactor(numerator, denominator);
+            numerator /= GCF;
+            denominator /= GCF;
+        } else {
+            denominator = 1;
+        }
+    }
+    
+    public boolean equals(Fraction external) {
+        return (external.numerator == numerator) && (external.denominator == denominator || numerator == 0);
+    }
+    
     private void simplifyNegative() {
         boolean neg = numerator*denominator < 0;    
         numerator = Math.abs(numerator);
@@ -67,14 +79,14 @@ public class Fraction
     public void setNum(int n) {
         numerator =  n;
         simplifyNegative();
-        reduce();
+        //reduce();
     }
 
     public void setDenom(int d) {
         checkZero(d);
         denominator = d;
         simplifyNegative();
-        reduce();
+        //reduce();
     }
 
     public static Fraction mult(Fraction a, Fraction b) {
@@ -93,16 +105,17 @@ public class Fraction
 
     public static Fraction add(Fraction a, Fraction b) {
         int commonD = a.getDenom()*b.getDenom();
-        a.setNum(a.getNum()*commonD/a.getDenom());
-        b.setNum(b.getNum()*commonD/b.getDenom());
-        Fraction ans = new Fraction(a.getNum()+b.getNum(), commonD);
+        int aNum = (a.getNum()*commonD/a.getDenom());
+        int bNum = (b.getNum()*commonD/b.getDenom());
+        Fraction ans = new Fraction(aNum+bNum, commonD);
         ans.reduce();
         return ans;
     }
 
     public static Fraction subtract(Fraction a, Fraction b) {
-        b.setNum(b.getNum()*-1);
-        return add(a, b);
+        Fraction negB = new Fraction(b);
+        negB.setNum(b.getNum()*-1);
+        return add(a, negB);
     }
 
     //borcken if num is 0
